@@ -40,7 +40,7 @@ def main():
     phys_export.close()
     # read in the marc file using pymarc, check it record by record against each dictionary. For items that are
     # not in the Hathi OCLC dict, combine data from bib and item records and print to file.
-    out = open('burns_queue.txt', 'w')
+    out = open('digitization_candidates.txt', 'w')
     with open(sys.argv[2], 'rb') as bibs:
         reader = MARCReader(bibs)
         for record in reader:
