@@ -10,7 +10,7 @@ from pymarc import MARCReader
 import sys
 
 def main():
-    # read in Hathifile and create a dictionary of OCLC numbers (lines 14-25 final but commented out for testing)
+    # read in Hathifile and create a dictionary of OCLC numbers
     oclc = dict()
     hathi = open(sys.argv[1], 'r')
     ht_in = hathi.read()
@@ -44,6 +44,10 @@ def main():
     with open(sys.argv[2], 'rb') as bibs:
         reader = MARCReader(bibs)
         for record in reader:
+            # feed the date into the public domain function and only process the line if the item is public domain
+            date_check = public_domain(record.pubyear())
+            if date_check is False:
+                continue
             alma_id = str(record['001'])
             title = record.title()
             author = record.author()
@@ -74,6 +78,36 @@ def main():
                                 out.write('\n')
     bibs.close()
     out.close()
+
+
+def public_domain(date):
+    # determines whether the work is in the public domain and returns a bool. Will need to be updated annually at the
+    # calendar new year
+    value = date
+    pd = False
+    try:
+        trimmed = ''.join(ch for ch in value if ch.isdigit())
+    except TypeError:
+        return pd
+    if len(trimmed) >= 4:
+        final = trimmed[0:4]
+        if int(final) <= 1924:
+            pd = True
+    elif len(trimmed) <= 3:
+        if len(trimmed) > 0:
+
+            try:
+                if int(trimmed[2]) < 2:
+                    pd = True
+                elif int(trimmed[2]) == 2:
+                    try:
+                        if int(trimmed[3]) <= 4:
+                            pd = True
+                    except IndexError:
+                        pass
+            except IndexError:
+                pass
+    return pd
 
 
 main()
