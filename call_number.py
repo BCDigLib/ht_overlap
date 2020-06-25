@@ -9,11 +9,14 @@ def main():
             overlap = open(infile, 'r')
         except FileNotFoundError:
             print("That file does not exist in your current directory. Please move the file to your current directory"
-                  "or check your spelling")
+                  " or check your spelling")
             continue
         else:
             break
     outfile = open('sorted_queue.txt', 'w')
+    # create a header line
+    outfile.write("Site\tUsername\tResearcherUsername\tFormat\tSpecialRequest\tDocumentType\tItemNumber\tReferenceNumber"
+                  "\tItemTitle\tItemAuthor\tItemDate\tLocation\tItemVolume\tCallNumber\tItemInfo4\n")
     letters = input("Please list the letters of the LC Call number you wish to sort by (e.g. BX)")
     while True:
         try:
@@ -37,13 +40,18 @@ def main():
     lines = data.splitlines()
     for line in lines:
         fields = line.split('\t')
+        new_call = fields[0].replace("'", "")
+        fields[0] = new_call
         call_num = fields[7]
         if letters in call_num[0:3]:
             period_loc = fields[7].index('.')
             number_part = fields[7][2:period_loc]
             try:
                 if lower_num < int(number_part) < upper_num:
-                    outfile.write(line + '\n')
+                    outfile.write('\t\t\tOther\tDigitizationQueue\tMonograph\t')
+                    for field in fields:
+                        outfile.write(field + '\t')
+                    outfile.write('\n')
             except ValueError:
                 pass
     overlap.close()

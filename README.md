@@ -9,4 +9,4 @@ Run two exports based on that set - a bibliographic record export (binary, singl
 Download the most recent full hathifile from the URL linked above.
 Run ht_overlap_analysis.py with those three files as inputs, and import the resulting text file into an excel or gsheets spreadsheet.
 
-The produced output file can then be used to run call_number.py and produce a list of digitization candidates focused on a specific collection area.
+The produced output file can then be used to run call_number.py and produce a list of digitization candidates focused on a specific collection area. The output file of call_number.py is a tab-delimited text file, but once imported into Excel (being careful to mark the ItemNumber and ReferenceNumber fields as text, not general), the resulting excel file can be imported into Aeon to produce a queue of candidate items for digitization.
