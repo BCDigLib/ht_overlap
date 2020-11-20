@@ -48,7 +48,7 @@ def main():
             number_part = fields[7][2:period_loc]
             try:
                 if lower_num < int(number_part) < upper_num:
-                    outfile.write('\t\t\tOther\tDigitizationQueue\tMonograph\t')
+                    outfile.write('\t\t\tOther\tDigitization queue; Programmatic\tMonograph\t')
                     for field in fields:
                         outfile.write(field + '\t')
                     outfile.write('\n')
